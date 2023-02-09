@@ -18,33 +18,25 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 @SuppressWarnings("ConstantConditions")
 public class GMSHook implements IXposedHookLoadPackage {
 
-    private static final String TAG = "GMSHook";
+    private static final String TAG = "GmsCompat/Attestation";
+    private static final String PACKAGE_GMS = "com.google.android.gms";
+    private static final String PACKAGE_FINSKY = "com.android.vending";
+    private static final String PROCESS_UNSTABLE = "com.google.android.gms.unstable";
     private static final String PROVIDER_NAME = "AndroidKeyStore";
-    private static final String ANGER_FINGERPRINT = "google/angler/angler:6.0/MDB08L/2343525:user/release-keys";
+    private static boolean sIsGms = false;
+    private static boolean sIsFinsky = false;
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) {
-        if ("com.google.android.gms".equals(loadPackageParam.packageName)) {
-            if (!"com.google.android.gms.unstable".equals(loadPackageParam.processName)) {
-                Log.d(TAG, "not droid guard process: " + loadPackageParam.processName);
-                return;
-            }
-            try {
-                Field model = Build.class.getDeclaredField("MODEL");
-                model.setAccessible(true);
-                model.set(null, Build.MODEL + " ");
-                Log.d(TAG, "model changed");
-            } catch (Throwable t) {
-                XposedBridge.log("model change failed: " + Log.getStackTraceString(t));
-            }
-            try {
-                Field fingerprint = Build.class.getDeclaredField("FINGERPRINT");
-                fingerprint.setAccessible(true);
-                fingerprint.set(null, ANGER_FINGERPRINT);
-                Log.d(TAG, "fingerprint changed");
-            } catch (Throwable t) {
-                XposedBridge.log("fingerprint change failed: " + Log.getStackTraceString(t));
-            }
+        if (PACKAGE_GMS.equals(loadPackageParam.packageName) &&
+                PROCESS_UNSTABLE.equals(loadPackageParam.processName)) {
+            sIsGms = true;
+            spoofBuildGms();
+        }
+        if (PACKAGE_FINSKY.equals(loadPackageParam.packageName)) {
+            sIsFinsky = true;
+        }
+        if (sIsGms || sIsFinsky) {
             try {
                 KeyStore keyStore = KeyStore.getInstance(PROVIDER_NAME);
                 Field keyStoreSpi = keyStore.getClass().getDeclaredField("keyStoreSpi");
@@ -52,7 +44,7 @@ public class GMSHook implements IXposedHookLoadPackage {
                 XposedHelpers.findAndHookMethod(keyStoreSpi.get(keyStore).getClass(), "engineGetCertificateChain", String.class, new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) {
-                        if (isCallerDroidGuard()) {
+                        if (isCallerSafetyNet() || sIsFinsky) {
                             param.setThrowable(new UnsupportedOperationException());
                         }
                     }
@@ -64,8 +56,46 @@ public class GMSHook implements IXposedHookLoadPackage {
         }
     }
 
-    private static boolean isCallerDroidGuard() {
-        return Arrays.stream(Thread.currentThread().getStackTrace()).anyMatch(stackTraceElement -> stackTraceElement.getClassName().toLowerCase().contains("droidguard"));
+    private static void spoofBuildGms() {
+        // Alter model name and fingerprint to avoid hardware attestation enforcement
+        setBuildField("FINGERPRINT", "google/marlin/marlin:7.1.2/NJH47F/4146041:user/release-keys");
+        setBuildField("PRODUCT", "marlin");
+        setBuildField("DEVICE", "marlin");
+        setBuildField("MODEL", "Pixel XL");
+        setVersionField("DEVICE_INITIAL_SDK_INT", Build.VERSION_CODES.N_MR1);
+    }
+
+    private static boolean isCallerSafetyNet() {
+        return sIsGms && Arrays.stream(Thread.currentThread().getStackTrace())
+                .anyMatch(elem -> elem.getClassName().contains("DroidGuard"));
+    }
+
+    private static void setBuildField(String key, String value) {
+        try {
+            // Unlock
+            Field field = Build.class.getDeclaredField(key);
+            field.setAccessible(true);
+            // Edit
+            field.set(null, value);
+            // Lock
+            field.setAccessible(false);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            Log.e(TAG, "Failed to spoof Build." + key, e);
+        }
+    }
+
+    private static void setVersionField(String key, Integer value) {
+        try {
+            // Unlock
+            Field field = Build.VERSION.class.getDeclaredField(key);
+            field.setAccessible(true);
+            // Edit
+            field.set(null, value);
+            // Lock
+            field.setAccessible(false);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            Log.e(TAG, "Failed to spoof Build." + key, e);
+        }
     }
 
 }
