@@ -27,6 +27,7 @@ android {
     }
 
     dependenciesInfo.includeInApk false
+    namespace 'io.github.tehcneko.disablehardwareattestation'
 }
 
 dependencies {
