@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Process;
 import android.os.Build.VERSION;
 import android.util.Log;
+import android.os.Binder;
 
 import java.lang.reflect.Field;
 import java.security.KeyStore;
@@ -41,40 +42,36 @@ public class GMSHook implements IXposedHookLoadPackage {
                 PROCESS_UNSTABLE.equals(loadPackageParam.processName)) {
             sIsGms = true;
 
-             final boolean was = isGmsAddAccountActivityOnTop();
-                final TaskStackListener taskStackListener = new TaskStackListener() {
-                    @Override
-                    public void onTaskStackChanged() {
-                        final boolean is = isGmsAddAccountActivityOnTop();
-                        if (is ^ was) {
-                            dlog("GmsAddAccountActivityOnTop is:" + is + " was:" + was +
-                                    ", killing myself!"); // process will restart automatically later
-                            Process.killProcess(Process.myPid());
-                        }
+            final boolean was = isGmsAddAccountActivityOnTop();
+            final ActivityTaskManager.TaskStackListener taskStackListener = new ActivityTaskManager.TaskStackListener() {
+                @Override
+                public void onTaskStackChanged() {
+                    final boolean is = isGmsAddAccountActivityOnTop();
+                    if (is ^ was) {
+                        dlog("GmsAddAccountActivityOnTop is:" + is + " was:" + was +
+                                ", killing myself!"); // process will restart automatically later
+                        Process.killProcess(Process.myPid());
                     }
-                };
-                try {
-                    ActivityTaskManager.getService().registerTaskStackListener(taskStackListener);
-                } catch (Exception e) {
-                    Log.e(TAG, "Failed to register task stack listener!", e);
                 }
-                if (was) return;
-
-                setPropValue("FINGERPRINT", "google/walleye/walleye:8.1.0/OPM1.171019.011/4448085:user/release-keys");
-                setVersionField("DEVICE_INITIAL_SDK_INT", Build.VERSION_CODES.N_MR1);
-            } else if (processName.toLowerCase().contains("persistent")
-                        || processName.toLowerCase().contains("ui")
-                        || processName.toLowerCase().contains("learning")) {
-                propsToChange.putAll(propsToChangePixel6Pro);
+            };
+            try {
+                ActivityTaskManager.getService().registerTaskStackListener(taskStackListener);
+            } catch (Exception e) {
+                Log.e(TAG, "Failed to register task stack listener!", e);
             }
+            if (was) return;
+
+            setPropValue("FINGERPRINT", "google/walleye/walleye:8.1.0/OPM1.171019.011/4448085:user/release-keys");
+            setVersionField("DEVICE_INITIAL_SDK_INT", Build.VERSION_CODES.N_MR1);
             return;
         }
-    
-            spoofBuildGms();
-        }
+
+        spoofBuildGms();
+
         if (PACKAGE_FINSKY.equals(loadPackageParam.packageName)) {
             sIsFinsky = true;
         }
+
         if (sIsGms || sIsFinsky) {
             try {
                 KeyStore keyStore = KeyStore.getInstance(PROVIDER_NAME);
@@ -156,13 +153,14 @@ public class GMSHook implements IXposedHookLoadPackage {
             return false;
         }
         return gmsUid == callingUid;
+    }
 
     private static boolean isCallerSafetyNet() {
         return sIsGms && Arrays.stream(Thread.currentThread().getStackTrace())
                 .anyMatch(elem -> elem.getClassName().contains("DroidGuard"));
     }
+
     public static void dlog(String msg) {
         if (DEBUG) Log.d(TAG, msg);
     }
-
 }
