@@ -26,6 +26,8 @@ public class GMSHook implements IXposedHookLoadPackage {
     private static final String PACKAGE_FINSKY = "com.android.vending";
     private static final String PROCESS_UNSTABLE = "com.google.android.gms.unstable";
     private static final String PROVIDER_NAME = "AndroidKeyStore";
+    private static final ComponentName GMS_ADD_ACCOUNT_ACTIVITY = ComponentName.unflattenFromString(
+            "com.google.android.gms/.auth.uiflows.minutemaid.MinuteMaidActivity");
     private static boolean sIsGms = false;
     private static boolean sIsFinsky = false;
 
@@ -34,6 +36,33 @@ public class GMSHook implements IXposedHookLoadPackage {
         if (PACKAGE_GMS.equals(loadPackageParam.packageName) &&
                 PROCESS_UNSTABLE.equals(loadPackageParam.processName)) {
             sIsGms = true;
+
+            final boolean was = isGmsAddAccountActivityOnTop();
+                final TaskStackListener taskStackListener = new TaskStackListener() {
+                    @Override
+                    public void onTaskStackChanged() {
+                        final boolean is = isGmsAddAccountActivityOnTop();
+                        if (is ^ was) {
+                            Process.killProcess(Process.myPid());
+                        }
+                    }
+                };
+                try {
+                    ActivityTaskManager.getService().registerTaskStackListener(taskStackListener);
+                } catch (Exception e) {
+                    Log.e(TAG, "Failed to register task stack listener!", e);
+                }
+                if (was) return;
+
+                setPropValue("FINGERPRINT", "google/walleye/walleye:8.1.0/OPM1.171019.011/4448085:user/release-keys");
+                setVersionField("DEVICE_INITIAL_SDK_INT", Build.VERSION_CODES.N_MR1);
+            } else if (processName.toLowerCase().contains("persistent")
+                        || processName.toLowerCase().contains("ui")
+                        || processName.toLowerCase().contains("learning")) {
+                propsToChange.putAll(propsToChangePixel6Pro);
+            }
+            return;
+        
             spoofBuildGms();
         }
         if (PACKAGE_FINSKY.equals(loadPackageParam.packageName)) {
@@ -65,7 +94,7 @@ public class GMSHook implements IXposedHookLoadPackage {
         setBuildField("PRODUCT", "walleye");
         setBuildField("DEVICE", "walleye");
         setBuildField("MODEL", "Pixel 2");
-        setVersionField("DEVICE_INITIAL_SDK_INT", Build.VERSION_CODES.O);
+        setVersionField("DEVICE_INITIAL_SDK_INT", Build.VERSION_CODES.N_MR1);
     }
 
     private static void setBuildField(String key, Object value) {
@@ -77,8 +106,6 @@ public class GMSHook implements IXposedHookLoadPackage {
             field.set(null, value);
             // Lock
             field.setAccessible(false);
-        } catch (NoSuchFieldException | IllegalAccessException e) {
-            Log.e(TAG, "Failed to spoof Build." + key, e);
         }
     }
 
@@ -94,6 +121,26 @@ public class GMSHook implements IXposedHookLoadPackage {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             Log.e(TAG, "Failed to spoof Build." + key, e);
         }
+    }
+
+     private static boolean isGmsAddAccountActivityOnTop() {
+        try {
+            final ActivityTaskManager.RootTaskInfo focusedTask =
+                    ActivityTaskManager.getService().getFocusedRootTaskInfo();
+            return focusedTask != null && focusedTask.topActivity != null
+                    && focusedTask.topActivity.equals(GMS_ADD_ACCOUNT_ACTIVITY);
+        }
+        return false;
+    }
+
+   public static boolean shouldBypassTaskPermission(Context context) {
+        // GMS doesn't have MANAGE_ACTIVITY_TASKS permission
+        final int callingUid = Binder.getCallingUid();
+        final int gmsUid;
+        try {
+            gmsUid = context.getPackageManager().getApplicationInfo(PACKAGE_GMS, 0).uid;
+        }
+        return gmsUid == callingUid;
     }
 
     private static boolean isCallerSafetyNet() {
