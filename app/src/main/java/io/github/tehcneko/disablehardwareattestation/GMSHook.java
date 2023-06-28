@@ -1,9 +1,11 @@
 package io.github.tehcneko.disablehardwareattestation;
 
 import android.annotation.SuppressLint;
-import android.app.Application;
-import android.content.res.Resources;
+import android.app.ActivityTaskManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.os.Build;
+import android.os.Process;
 import android.os.Build.VERSION;
 import android.util.Log;
 
@@ -26,8 +28,10 @@ public class GMSHook implements IXposedHookLoadPackage {
     private static final String PACKAGE_FINSKY = "com.android.vending";
     private static final String PROCESS_UNSTABLE = "com.google.android.gms.unstable";
     private static final String PROVIDER_NAME = "AndroidKeyStore";
+
     private static final ComponentName GMS_ADD_ACCOUNT_ACTIVITY = ComponentName.unflattenFromString(
             "com.google.android.gms/.auth.uiflows.minutemaid.MinuteMaidActivity");
+    private static final boolean DEBUG = false;
     private static boolean sIsGms = false;
     private static boolean sIsFinsky = false;
 
@@ -37,12 +41,14 @@ public class GMSHook implements IXposedHookLoadPackage {
                 PROCESS_UNSTABLE.equals(loadPackageParam.processName)) {
             sIsGms = true;
 
-            final boolean was = isGmsAddAccountActivityOnTop();
+             final boolean was = isGmsAddAccountActivityOnTop();
                 final TaskStackListener taskStackListener = new TaskStackListener() {
                     @Override
                     public void onTaskStackChanged() {
                         final boolean is = isGmsAddAccountActivityOnTop();
                         if (is ^ was) {
+                            dlog("GmsAddAccountActivityOnTop is:" + is + " was:" + was +
+                                    ", killing myself!"); // process will restart automatically later
                             Process.killProcess(Process.myPid());
                         }
                     }
@@ -62,7 +68,8 @@ public class GMSHook implements IXposedHookLoadPackage {
                 propsToChange.putAll(propsToChangePixel6Pro);
             }
             return;
-        
+        }
+    
             spoofBuildGms();
         }
         if (PACKAGE_FINSKY.equals(loadPackageParam.packageName)) {
@@ -94,7 +101,7 @@ public class GMSHook implements IXposedHookLoadPackage {
         setBuildField("PRODUCT", "walleye");
         setBuildField("DEVICE", "walleye");
         setBuildField("MODEL", "Pixel 2");
-        setVersionField("DEVICE_INITIAL_SDK_INT", Build.VERSION_CODES.N_MR1);
+        setVersionField("DEVICE_INITIAL_SDK_INT", Build.VERSION_CODES.O);
     }
 
     private static void setBuildField(String key, Object value) {
@@ -106,6 +113,8 @@ public class GMSHook implements IXposedHookLoadPackage {
             field.set(null, value);
             // Lock
             field.setAccessible(false);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            Log.e(TAG, "Failed to spoof Build." + key, e);
         }
     }
 
@@ -123,29 +132,37 @@ public class GMSHook implements IXposedHookLoadPackage {
         }
     }
 
-     private static boolean isGmsAddAccountActivityOnTop() {
+    private static boolean isGmsAddAccountActivityOnTop() {
         try {
             final ActivityTaskManager.RootTaskInfo focusedTask =
                     ActivityTaskManager.getService().getFocusedRootTaskInfo();
             return focusedTask != null && focusedTask.topActivity != null
                     && focusedTask.topActivity.equals(GMS_ADD_ACCOUNT_ACTIVITY);
+        } catch (Exception e) {
+            Log.e(TAG, "Unable to get top activity!", e);
         }
         return false;
     }
 
-   public static boolean shouldBypassTaskPermission(Context context) {
+    public static boolean shouldBypassTaskPermission(Context context) {
         // GMS doesn't have MANAGE_ACTIVITY_TASKS permission
         final int callingUid = Binder.getCallingUid();
         final int gmsUid;
         try {
             gmsUid = context.getPackageManager().getApplicationInfo(PACKAGE_GMS, 0).uid;
+            dlog("shouldBypassTaskPermission: gmsUid:" + gmsUid + " callingUid:" + callingUid);
+        } catch (Exception e) {
+            Log.e(TAG, "shouldBypassTaskPermission: unable to get gms uid", e);
+            return false;
         }
         return gmsUid == callingUid;
-    }
 
     private static boolean isCallerSafetyNet() {
         return sIsGms && Arrays.stream(Thread.currentThread().getStackTrace())
                 .anyMatch(elem -> elem.getClassName().contains("DroidGuard"));
+    }
+    public static void dlog(String msg) {
+        if (DEBUG) Log.d(TAG, msg);
     }
 
 }
