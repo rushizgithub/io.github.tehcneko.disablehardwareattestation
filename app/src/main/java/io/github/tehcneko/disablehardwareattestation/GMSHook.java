@@ -1,7 +1,10 @@
 package io.github.tehcneko.disablehardwareattestation;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
+import android.content.res.Resources;
 import android.os.Build;
+import android.os.Build.VERSION;
 import android.util.Log;
 
 import java.lang.reflect.Field;
@@ -58,19 +61,14 @@ public class GMSHook implements IXposedHookLoadPackage {
 
     private static void spoofBuildGms() {
         // Alter model name and fingerprint to avoid hardware attestation enforcement
-        setBuildField("FINGERPRINT", "google/marlin/marlin:7.1.2/NJH47F/4146041:user/release-keys");
-        setBuildField("PRODUCT", "marlin");
-        setBuildField("DEVICE", "marlin");
-        setBuildField("MODEL", "Pixel XL");
-        setVersionField("DEVICE_INITIAL_SDK_INT", Build.VERSION_CODES.N_MR1);
+        setBuildField("FINGERPRINT", "google/walleye/walleye:8.1.0/OPM1.171019.011/4448085:user/release-keys");
+        setBuildField("PRODUCT", "walleye");
+        setBuildField("DEVICE", "walleye");
+        setBuildField("MODEL", "Pixel 2");
+        setVersionField("DEVICE_INITIAL_SDK_INT", Build.VERSION_CODES.O);
     }
 
-    private static boolean isCallerSafetyNet() {
-        return sIsGms && Arrays.stream(Thread.currentThread().getStackTrace())
-                .anyMatch(elem -> elem.getClassName().contains("DroidGuard"));
-    }
-
-    private static void setBuildField(String key, String value) {
+    private static void setBuildField(String key, Object value) {
         try {
             // Unlock
             Field field = Build.class.getDeclaredField(key);
@@ -96,6 +94,11 @@ public class GMSHook implements IXposedHookLoadPackage {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             Log.e(TAG, "Failed to spoof Build." + key, e);
         }
+    }
+
+    private static boolean isCallerSafetyNet() {
+        return sIsGms && Arrays.stream(Thread.currentThread().getStackTrace())
+                .anyMatch(elem -> elem.getClassName().contains("DroidGuard"));
     }
 
 }
