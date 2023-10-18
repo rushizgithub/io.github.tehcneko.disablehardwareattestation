@@ -48,7 +48,7 @@ public class GMSHook implements IXposedHookLoadPackage {
 
         // Log the spoofed values for verification
         Log.i(TAG, "Found" + packageName) ;
-        Log.i(TAG, "Spoofed BRAND: " + spoofInfo.brand " MODEL: " + spoofInfo.model);
+        Log.i(TAG, "Spoofed BRAND: " + spoofInfo.brand +" MODEL: " + spoofInfo.model);
     }
 
     private void setBuildField(String key, String value) {
