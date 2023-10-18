@@ -15,15 +15,12 @@ import java.util.Map;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-public class GMSHook implements IXposedHookLoadPackage {
-
-    private static volatile boolean sIsGms = false;
-    private static volatile boolean sIsFinsky = false;
-
+public class GMSHook {
+    
     private static final String TAG = GMSHook.class.getSimpleName();
     private static final String DEVICE = "ro.product.device";
     private static final boolean DEBUG = false;
-    
+
     private static final Map<String, Object> propsToChangeGeneric;
     private static final Map<String, Object> propsToChangePixel5;
     private static final Map<String, Object> propsToChangePixel7Pro;
@@ -98,16 +95,14 @@ public class GMSHook implements IXposedHookLoadPackage {
             "com.madfingergames.legends",
             "com.mobile.legends",
             "com.pearlabyss.blackdesertm",
-            "com.pearlabyss.blackdesertm.gl",
-            "ru.andr7e.deviceinfohw"
+            "com.pearlabyss.blackdesertm.gl"
     };
 
     // Packages to Spoof as Xperia 5
     private static final String[] packagesToChangeXP5 = {
             "com.garena.game.codm",
             "com.tencent.tmgp.kr.codm",
-            "com.vng.codmvn",
-            "com.ytheekshana.deviceinfo"
+            "com.vng.codmvn"
     };
 
     // Packages to Spoof as OnePlus 8 Pro
@@ -120,8 +115,7 @@ public class GMSHook implements IXposedHookLoadPackage {
             "com.riotgames.league.wildriftvn",
             "com.tencent.ig",
             "com.tencent.tmgp.pubgmhd",
-            "com.vng.pubgmobile",
-            "flar2.devcheck"
+            "com.vng.pubgmobile"
     };
 
     // Packages to Spoof as OnePlus 9 Pro
