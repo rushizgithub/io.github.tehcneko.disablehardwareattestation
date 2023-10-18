@@ -18,45 +18,136 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 @SuppressWarnings("ConstantConditions")
 public class GMSHook implements IXposedHookLoadPackage {
 
-    private static final String TAG = GMSHook.class.getSimpleName();
-    private static final String PACKAGE_1 = "ru.andr7e.deviceinfohw";
-    private static final String PACKAGE_2 = "com.ytheekshana.deviceinfo";
-    private static final String PACKAGE_3 = "flar2.devcheck";
+    private static final String TAG = GMSHook;
+    private static final String[] PACKAGE_ROG1 = {"ru.andr7e.deviceinfohw","com.madfingergames.legends"};
+    private static final String[] PACKAGE_ROG3 = {"com.pearlabyss.blackdesertm","com.pearlabyss.blackdesertm.gl"};
+    private static final String[] PACKAGE_XP5 = {"com.ytheekshana.deviceinfo","com.activision.callofduty.shooter","com.garena.game.codm","com.tencent.tmgp.kr.codm","com.vng.codmvn""};
+    private static final String[] PACKAGE_OP8P = {"com.netease.lztgglobal","com.pubg.imobile","com.pubg.krmobile","com.rekoo.pubgm","com.riotgames.league.wildrift","com.riotgames.league.wildrifttw","com.riotgames.league.wildriftvn","com.tencent.ig","com.tencent.tmgp.pubgmhd","com.vng.pubgmobile"};
+    private static final String[] PACKAGE_OP9R = {"com.epicgames.fortnite","com.epicgames.portal"};
+    private static final String[] PACKAGE_M11TP = {"com.ea.gp.apexlegendsmobilefps","com.levelinfinite.hotta.gp","com.mobile.legends","com.supercell.clashofclans","com.tencent.tmgp.sgame","com.vng.mlbbvn"};
+    private static final String[] PACKAGE_F4 = {"com.dts.freefiremax","com.dts.freefireth"};
+    private static final String[] PACKAGE_ROG6 = {"com.activision.callofduty.shooter","com.ea.gp.fifamobile","com.gameloft.android.ANMP.GloftA9HM","com.madfingergames.legends","com.mobile.legends","com.pearlabyss.blackdesertm","com.pearlabyss.blackdesertm.gl"};
+    private static final String[] PACKAGE_OP9P = {"com.epicgames.fortnite","com.epicgames.portal","com.tencent.lolm"};
+    private static final String[] PACKAGE_M13TP = {"flar2.devcheck","com.levelinfinite.sgameGlobal","com.tencent.tmgp.sgame"};
+    private static final String[] PACKAGE_F5 = {"com.dts.freefiremax","com.dts.freefireth"};
+    private static final String[] PACKAGE_K30U = {"com.pubg.imobile"};
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) {
-        if (PACKAGE_1.equals(loadPackageParam.packageName)) {
-            spoof1();
+
+        String packageName = loadPackageParam.packageName;
+        
+        if (Arrays.asList(PACKAGE_ROG1).contains(packageName)) {
+            ROG1();
         }
 
-        if (PACKAGE_2.equals(loadPackageParam.packageName)) {
-            spoof2();
+        if (Arrays.asList(PACKAGE_ROG3).contains(packageName)) {
+            ROG3();
         }
 
-        if (PACKAGE_3.equals(loadPackageParam.packageName)) {
-            spoof3();
+        if (Arrays.asList(PACKAGE_XP5).contains(packageName)) {
+            XP5();
         }
+
+        if (Arrays.asList(PACKAGE_OP8P).contains(packageName)) {
+            OP8P();
+        }
+
+        if (Arrays.asList(PACKAGE_OP9R).contains(packageName)) {
+            OP9R();
+        }
+
+        if (Arrays.asList(PACKAGE_M11TP).contains(packageName)) {
+            M11TP();
+        }
+
+        if (Arrays.asList(PACKAGE_F4).contains(packageName)) {
+            F4();
+        }
+
+        if (Arrays.asList(PACKAGE_ROG6).contains(packageName)) {
+            ROG6();
+        }
+
+        if (Arrays.asList(PACKAGE_OP9P).contains(packageName)) {
+            OP9P();
+        }
+
+        if (Arrays.asList(PACKAGE_M13TP).contains(packageName)) {
+            M13TP();
+        }
+
+        if (Arrays.asList(PACKAGE_F5).contains(packageName)) {
+            F5();
+        }
+
+        if (Arrays.asList(PACKAGE_K30U).contains(packageName)) {
+            K30U();
+        }
+        
     }
 
-    private static void spoof1() {
+    private static void ROG1() {
+        setBuildField("MANUFACTURER", "Asus");
+        setBuildField("MODEL", "ASUS_AI2201");
+    }
+    
+    private static void ROG3() {
+        setBuildField("MANUFACTURER", "Asus");
+        setBuildField("MODEL", "ASUS_I003D");
+    }
+    
+    private static void XP5() {
+        setBuildField("MANUFACTURER", "Sony");
+        setBuildField("MODEL", "SO-52A");
+    }
+
+    private static void OP8P() {
+        setBuildField("MANUFACTURER", "OnePlus");
+        setBuildField("MODEL", "IN2020");
+    }
+
+    private static void OP9RP() {
+        setBuildField("MANUFACTURER", "OnePlus");
+        setBuildField("MODEL", "LE2101");
+    }
+
+    private static void M11TP() {
+        setBuildField("MANUFACTURER", "Xiaomi");
+        setBuildField("MODEL", "21081111RG");
+    }
+
+    private static void POCOF4() {
+        setBuildField("MANUFACTURER", "Xiaomi");
+        setBuildField("MODEL", "22021211RG");
+    }
+
+    private static void ROG6() {
         setBuildField("BRAND", "asus");
         setBuildField("MANUFACTURER", "asus");
         setBuildField("DEVICE", "AI2201");
         setBuildField("MODEL", "ASUS_AI2201");
     }
 
-        private static void spoof2() {
-        setBuildField("BRAND", "Sony");
-        setBuildField("MANUFACTURER", "Sony");
-        setBuildField("DEVICE", "Sony");
-        setBuildField("MODEL", "SO-52A");
+   private static void OP9P() {
+        setBuildField("MANUFACTURER", "OnePlus");
+        setBuildField("MODEL", "LE2123");
     }
 
-        private static void spoof3() {
+    private static void M13TP() {
         setBuildField("BRAND", "Xiaomi");
         setBuildField("MANUFACTURER", "Xiaomi");
-        setBuildField("DEVICE", "2210132C");
         setBuildField("MODEL", "2210132C");
+    }
+
+    private static void F5() {
+        setBuildField("MANUFACTURER", "Xiaomi");
+        setBuildField("MODEL", "23049PCD8G");
+    }
+
+    private static void K30U() {
+        setBuildField("MANUFACTURER", "Xiaomi");
+        setBuildField("MODEL", "M2006J10C");
     }
 
     private static void setBuildField(String key, String value) {
