@@ -154,7 +154,7 @@ public class GMSHook implements IXposedHookLoadPackage {
             field.set(null, value);
             // Lock
             field.setAccessible(false);
-             Log.i(tag, "processing " + lpparam.packageName)
+             Log.i(tag, "processing " + lpparam.packageName);
 XposedBridge.log("tag: cannot find SystemProperties class");
             Log.d(TAG, "Spoofed Build." + key + " with value: " + value);
 XposedBridge.log(TAG, " Build." + key + " with value: " + value);
