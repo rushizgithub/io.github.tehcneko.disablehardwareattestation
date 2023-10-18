@@ -1,10 +1,7 @@
 <resources>
-    <string name="app_name">Play Integrity bypass</string>
-    <string name="xposed_description">Make your device pass Play Integrity check. Shamiko is required.</string>
+    <string name="app_name">Game Unlocker</string>
+    <string name="xposed_description">Spoof your device as different model for specific games to unlock higher FPS</string>
     <string-array name="scope">
-        <item>flar2.devcheck</item>
-        <item>com.ytheekshana.deviceinfo</item>
-        <item>ru.andr7e.deviceinfohw</item>
         <item>com.activision.callofduty.shooter</item>
         <item>com.dts.freefiremax</item>
         <item>com.dts.freefireth</item>

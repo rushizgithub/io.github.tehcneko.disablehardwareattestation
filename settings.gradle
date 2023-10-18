@@ -15,5 +15,5 @@ dependencyResolutionManagement {
         }
     }
 }
-rootProject.name = "GMSHook"
+rootProject.name = "GAMEUNLOCKER"
 include ':app'

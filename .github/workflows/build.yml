@@ -1,12 +1,9 @@
-name: Android CI
-
+name: Build Apk
 on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: set up JDK 11
@@ -27,6 +24,6 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
 
-          name: app-debug
+          name: Game Unlocker
           path: app/build/outputs/apk/debug/app-debug.apk
     
