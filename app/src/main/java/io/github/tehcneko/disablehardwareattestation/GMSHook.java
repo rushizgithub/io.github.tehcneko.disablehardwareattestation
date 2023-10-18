@@ -5,60 +5,97 @@ import android.os.Build;
 import android.util.Log;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
+import java.security.KeyStore;
+import java.util.Arrays;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
+@SuppressLint("DiscouragedPrivateApi")
+@SuppressWarnings("ConstantConditions")
 public class GMSHook implements IXposedHookLoadPackage {
 
     private static final String TAG = GMSHook.class.getSimpleName();
+    private static final String[] PACKAGE_1 = {
+    "com.activision.callofduty.shooter",
+            "com.garena.game.codm",
+            "com.tencent.tmgp.kr.codm",
+            "com.vng.codmvn",
+    "flar2.devcheck"
+};
 
-    private static final Map<String, SpoofInfo> spoofInfoMap = new HashMap<>();
+    private static final String[] PACKAGE_2 = {
+    "ru.andr7e.deviceinfohw",
+    "com.activision.callofduty.shooter",
+            "com.garena.game.codm",
+            "com.tencent.tmgp.kr.codm",
+            "com.vng.codmvn"
+};
 
-    private static class SpoofInfo {
-        String brand;
-        String model;
+        private static final String[] PACKAGE_3 = {
+"com.ea.gp.apexlegendsmobilefps",
+            "com.levelinfinite.hotta.gp",
+            "com.mobile.legends",
+            "com.supercell.clashofclans",
+            "com.tencent.tmgp.sgame",
+            "com.vng.mlbbvn",
+            "com.ytheekshana.deviceinfo"
+            
+};
 
-        SpoofInfo(String brand, String model) {
-            this.brand = brand;
-            this.model = model;
-        }
-    }
-
-    static {
-        spoofInfoMap.put("ru.andr7e.deviceinfohw", new SpoofInfo("asus", "ASUS_AI2201"));
-        spoofInfoMap.put("com.ytheekshana.deviceinfo", new SpoofInfo("Sony", "SO-52A"));
-        spoofInfoMap.put("flar2.devcheck", new SpoofInfo("Xiaomi", "2210132C"));
-        // Add more packages and spoof information as needed
-    }
+    private static final String PACKAGE_3 = "flar2.devcheck";
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) {
-        SpoofInfo spoofInfo = spoofInfoMap.get(loadPackageParam.packageName);
-        if (spoofInfo != null) {
-            spoofDeviceProperties(spoofInfo);
+        if (PACKAGE_1.equals(loadPackageParam.packageName)) {
+            spoof1();
+        }
+
+        if (PACKAGE_2.equals(loadPackageParam.packageName)) {
+            spoof2();
+        }
+
+        if (PACKAGE_3.equals(loadPackageParam.packageName)) {
+            spoof3();
         }
     }
 
-    private void spoofDeviceProperties(SpoofInfo spoofInfo) {
-        setBuildField("BRAND", spoofInfo.brand);
-        setBuildField("MODEL", spoofInfo.model);
-
-        // Log the spoofed values for verification
-        Log.i(TAG, "Found" + packageName) ;
-        Log.i(TAG, "Spoofed BRAND: " + spoofInfo.brand +" MODEL: " + spoofInfo.model);
+    private static void spoof1() {
+        setBuildField("BRAND", "asus");
+        setBuildField("MANUFACTURER", "asus");
+        setBuildField("DEVICE", "AI2201");
+        setBuildField("MODEL", "ASUS_AI2201");
     }
 
-    private void setBuildField(String key, String value) {
+        private static void spoof2() {
+        setBuildField("BRAND", "Sony");
+        setBuildField("MANUFACTURER", "Sony");
+        setBuildField("DEVICE", "Sony");
+        setBuildField("MODEL", "SO-52A");
+    }
+
+        private static void spoof3() {
+        setBuildField("BRAND", "Xiaomi");
+        setBuildField("MANUFACTURER", "Xiaomi");
+        setBuildField("DEVICE", "2210132C");
+        setBuildField("MODEL", "2210132C");
+    }
+
+    private static void setBuildField(String key, String value) {
         try {
+            // Unlock
             Field field = Build.class.getDeclaredField(key);
             field.setAccessible(true);
+            // Edit
             field.set(null, value);
+            // Lock
             field.setAccessible(false);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            Log.e(TAG, "Failed to spoof app." + key, e);
+            Log.e(TAG, "Failed to spoof Build." + key, e);
         }
     }
+
 }
