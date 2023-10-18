@@ -2,6 +2,8 @@
     <string name="app_name">Play Integrity bypass</string>
     <string name="xposed_description">Make your device pass Play Integrity check. Shamiko is required.</string>
     <string-array name="scope">
-        <item>com.google.android.gms</item>
+        <item>flar2.devcheck</item>
+        <item>com.ytheekshana.deviceinfo</item>
+        <item>ru.andr7e.deviceinfohws</item>
     </string-array>
 </resources>
