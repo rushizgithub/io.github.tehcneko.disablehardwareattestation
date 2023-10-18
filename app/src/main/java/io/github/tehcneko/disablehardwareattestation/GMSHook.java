@@ -27,7 +27,7 @@ public class GMSHook implements IXposedHookLoadPackage {
     private static final String[] PACKAGE_M11TP = {"com.ea.gp.apexlegendsmobilefps","com.levelinfinite.hotta.gp","com.mobile.legends","com.supercell.clashofclans","com.tencent.tmgp.sgame","com.vng.mlbbvn"};
     private static final String[] PACKAGE_ROG6 = {"com.ea.gp.fifamobile","com.gameloft.android.ANMP.GloftA9HM"};
     private static final String[] PACKAGE_OP9P = {"com.tencent.lolm"};
-    private static final String[] PACKAGE_M13TP = {"flar2.devcheck","com.levelinfinite.sgameGlobal""};
+    private static final String[] PACKAGE_M13TP = {"flar2.devcheck","com.levelinfinite.sgameGlobal"};
     private static final String[] PACKAGE_F5 = {"com.dts.freefiremax","com.dts.freefireth"};
     private static final String[] PACKAGE_K30U = {"com.pubg.imobile"};
 
