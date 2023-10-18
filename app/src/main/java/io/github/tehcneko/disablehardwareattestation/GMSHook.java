@@ -22,13 +22,12 @@ public class GMSHook implements IXposedHookLoadPackage {
     private static final String[] PACKAGE_ROG1 = {"ru.andr7e.deviceinfohw","com.madfingergames.legends"};
     private static final String[] PACKAGE_ROG3 = {"com.pearlabyss.blackdesertm","com.pearlabyss.blackdesertm.gl"};
     private static final String[] PACKAGE_XP5 = {"com.ytheekshana.deviceinfo","com.activision.callofduty.shooter","com.garena.game.codm","com.tencent.tmgp.kr.codm","com.vng.codmvn"};
-    private static final String[] PACKAGE_OP8P = {"com.netease.lztgglobal","com.pubg.imobile","com.pubg.krmobile","com.rekoo.pubgm","com.riotgames.league.wildrift","com.riotgames.league.wildrifttw","com.riotgames.league.wildriftvn","com.tencent.ig","com.tencent.tmgp.pubgmhd","com.vng.pubgmobile"};
+    private static final String[] PACKAGE_OP8P = {"com.netease.lztgglobal","com.pubg.krmobile","com.rekoo.pubgm","com.riotgames.league.wildrift","com.riotgames.league.wildrifttw","com.riotgames.league.wildriftvn","com.tencent.ig","com.tencent.tmgp.pubgmhd","com.vng.pubgmobile"};
     private static final String[] PACKAGE_OP9R = {"com.epicgames.fortnite","com.epicgames.portal"};
     private static final String[] PACKAGE_M11TP = {"com.ea.gp.apexlegendsmobilefps","com.levelinfinite.hotta.gp","com.mobile.legends","com.supercell.clashofclans","com.tencent.tmgp.sgame","com.vng.mlbbvn"};
-    private static final String[] PACKAGE_F4 = {"com.dts.freefiremax","com.dts.freefireth"};
-    private static final String[] PACKAGE_ROG6 = {"com.activision.callofduty.shooter","com.ea.gp.fifamobile","com.gameloft.android.ANMP.GloftA9HM","com.madfingergames.legends","com.mobile.legends","com.pearlabyss.blackdesertm","com.pearlabyss.blackdesertm.gl"};
-    private static final String[] PACKAGE_OP9P = {"com.epicgames.fortnite","com.epicgames.portal","com.tencent.lolm"};
-    private static final String[] PACKAGE_M13TP = {"flar2.devcheck","com.levelinfinite.sgameGlobal","com.tencent.tmgp.sgame"};
+    private static final String[] PACKAGE_ROG6 = {"com.ea.gp.fifamobile","com.gameloft.android.ANMP.GloftA9HM"};
+    private static final String[] PACKAGE_OP9P = {"com.tencent.lolm"};
+    private static final String[] PACKAGE_M13TP = {"flar2.devcheck","com.levelinfinite.sgameGlobal""};
     private static final String[] PACKAGE_F5 = {"com.dts.freefiremax","com.dts.freefireth"};
     private static final String[] PACKAGE_K30U = {"com.pubg.imobile"};
 
@@ -59,10 +58,6 @@ public class GMSHook implements IXposedHookLoadPackage {
 
         if (Arrays.asList(PACKAGE_M11TP).contains(packageName)) {
             M11TP();
-        }
-
-        if (Arrays.asList(PACKAGE_F4).contains(packageName)) {
-            POCOF4();
         }
 
         if (Arrays.asList(PACKAGE_ROG6).contains(packageName)) {
