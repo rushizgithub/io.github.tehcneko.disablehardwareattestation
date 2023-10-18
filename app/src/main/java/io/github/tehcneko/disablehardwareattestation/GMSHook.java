@@ -2,7 +2,7 @@ package io.github.tehcneko.disablehardwareattestation;
 
 import android.app.Application;
 import android.os.Build;
-import android.os.SystemProperties;
+// import android.os.SystemProperties;
 import android.util.Log;
 
 import java.lang.reflect.Field;
@@ -232,13 +232,8 @@ public class GMSHook {
             Map<String, Object> propsToChange = new HashMap<>();
 
             if (packageName.equals("com.google.android.apps.photos")) {
-                if (SystemProperties.getBoolean("persist.sys.pixelprops.gphotos", true)) {
                     propsToChange.putAll(propsToChangePixelXL);
-                } else {
-                    propsToChange.putAll(propsToChangePixel5);
-                }
-            } else if (packageName.equals("com.netflix.mediaclient") && 
-                        !SystemProperties.getBoolean("persist.sys.pixelprops.netflix", false)) {
+            } else if (packageName.equals("com.netflix.mediaclient") {
                     if (DEBUG) Log.d(TAG, "Netflix spoofing disabled by system prop");
                     return;
             } else if (packageName.equals("com.android.vending")) {
@@ -279,9 +274,6 @@ public class GMSHook {
                 setPropValue("FINGERPRINT", Build.VERSION.INCREMENTAL);
             }
         } else {
-
-            if (!SystemProperties.getBoolean("persist.sys.pixelprops.games", false))
-                return;
 
             if (Arrays.asList(packagesToChangeROG6).contains(packageName)) {
                 if (DEBUG) Log.d(TAG, "Defining props for: " + packageName);
