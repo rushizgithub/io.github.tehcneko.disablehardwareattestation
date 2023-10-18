@@ -19,9 +19,9 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 public class GMSHook implements IXposedHookLoadPackage {
 
     private static final String TAG = GMSHook.class.getSimpleName();
-    private static final String PACKAGE_1 = "com.google.android.gms";
-    private static final String PACKAGE_2 = "com.google.android.gms";
-    private static final String PACKAGE_3 = "com.google.android.gms";
+    private static final String PACKAGE_1 = "ru.andr7e.deviceinfohw";
+    private static final String PACKAGE_2 = "com.ytheekshana.deviceinfo";
+    private static final String PACKAGE_3 = "flar2.devcheck";
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) {
