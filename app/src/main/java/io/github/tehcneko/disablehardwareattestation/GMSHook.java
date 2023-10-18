@@ -19,7 +19,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 public class GMSHook implements IXposedHookLoadPackage {
 
     private static final String TAG = GMSHook.class.getSimpleName();
-    private static final String[] PACKAGE_ROG1 = {"ru.andr7e.deviceinfohw","com.madfingergames.legends"};
+    private static final String[] PACKAGE_ROG1 = {"com.madfingergames.legends"};
     private static final String[] PACKAGE_ROG3 = {"com.pearlabyss.blackdesertm","com.pearlabyss.blackdesertm.gl"};
     private static final String[] PACKAGE_XP5 = {"com.ytheekshana.deviceinfo","com.activision.callofduty.shooter","com.garena.game.codm","com.tencent.tmgp.kr.codm","com.vng.codmvn"};
     private static final String[] PACKAGE_OP8P = {"com.netease.lztgglobal","com.pubg.krmobile","com.rekoo.pubgm","com.riotgames.league.wildrift","com.riotgames.league.wildrifttw","com.riotgames.league.wildriftvn","com.tencent.ig","com.tencent.tmgp.pubgmhd","com.vng.pubgmobile"};
@@ -27,7 +27,7 @@ public class GMSHook implements IXposedHookLoadPackage {
     private static final String[] PACKAGE_M11TP = {"com.ea.gp.apexlegendsmobilefps","com.levelinfinite.hotta.gp","com.mobile.legends","com.supercell.clashofclans","com.tencent.tmgp.sgame","com.vng.mlbbvn"};
     private static final String[] PACKAGE_ROG6 = {"com.ea.gp.fifamobile","com.gameloft.android.ANMP.GloftA9HM"};
     private static final String[] PACKAGE_OP9P = {"com.tencent.lolm"};
-    private static final String[] PACKAGE_M13TP = {"flar2.devcheck","com.levelinfinite.sgameGlobal"};
+    private static final String[] PACKAGE_M13TP = {"ru.andr7e.deviceinfohw","flar2.devcheck","com.levelinfinite.sgameGlobal"};
     private static final String[] PACKAGE_F5 = {"com.dts.freefiremax","com.dts.freefireth"};
     private static final String[] PACKAGE_K30U = {"com.pubg.imobile"};
 
@@ -38,67 +38,67 @@ public class GMSHook implements IXposedHookLoadPackage {
         
         if (Arrays.asList(PACKAGE_ROG1).contains(packageName)) {
             ROG1();
-            XposedBridge.log("Spoof as Asus ROG 1" + packageName);
+            XposedBridge.log("Spoofed" + packageName + " as Asus ROG 1";
 
         }
 
         if (Arrays.asList(PACKAGE_ROG3).contains(packageName)) {
             ROG3();
-            XposedBridge.log("Spoof as Asus ROG 3" + packageName);
+            XposedBridge.log("Spoofed" + packageName + " as Asus ROG 3";
 
         }
 
         if (Arrays.asList(PACKAGE_XP5).contains(packageName)) {
             XP5();
-            XposedBridge.log("Spoof as Sony Xperia 5" + packageName);
+            XposedBridge.log("Spoofed" + packageName + " as Sony Xperia 5";
 
         }
 
         if (Arrays.asList(PACKAGE_OP8P).contains(packageName)) {
             OP8P();
-            XposedBridge.log("Spoof as OnePlus 8 Pro" + packageName);
+            XposedBridge.log("Spoofed" + packageName + " as OnePlus 8 Pro";
 
         }
 
         if (Arrays.asList(PACKAGE_OP9R).contains(packageName)) {
             OP9RP();
-            XposedBridge.log("Spoof as OnePlus 9R" + packageName);
+            XposedBridge.log("Spoofed" + packageName + " as OnePlus 9R";
 
         }
 
         if (Arrays.asList(PACKAGE_M11TP).contains(packageName)) {
             M11TP();
-            XposedBridge.log("Spoof as Mi 11T Pro" + packageName);
+            XposedBridge.log("Spoofed" + packageName + " as Mi 11T Pro";
 
         }
 
         if (Arrays.asList(PACKAGE_ROG6).contains(packageName)) {
             ROG6();
-            XposedBridge.log("Spoof as Asus ROG 6" + packageName);
+            XposedBridge.log("Spoofed" + packageName + " as Asus ROG 6";
  
         }
 
         if (Arrays.asList(PACKAGE_OP9P).contains(packageName)) {
             OP9P();
-            XposedBridge.log("Spoof as OnePlus 9 Pro" + packageName);
+            XposedBridge.log("Spoofed" + packageName + " as OnePlus 9 Pro";
 
         }
 
         if (Arrays.asList(PACKAGE_M13TP).contains(packageName)) {
             M13TP();
-            XposedBridge.log("Spoof as  Mi 13T Pro" + packageName);
+            XposedBridge.log("Spoofed" + packageName + " as  Mi 13T Pro";
 
         }
 
         if (Arrays.asList(PACKAGE_F5).contains(packageName)) {
             POCOF5();
-            XposedBridge.log("Spoof as Poco F5" + packageName);
+            XposedBridge.log("Spoofed" + packageName + " as Poco F5";
 
         }
 
         if (Arrays.asList(PACKAGE_K30U).contains(packageName)) {
             K30U();
-            XposedBridge.log("Spoof as Redmi K30 Ultra" + packageName);
+            XposedBridge.log("Spoofed" + packageName + " as Redmi K30 Ultra";
 
         }
         
