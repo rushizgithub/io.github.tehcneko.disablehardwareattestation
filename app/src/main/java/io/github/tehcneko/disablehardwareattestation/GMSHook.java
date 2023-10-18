@@ -18,7 +18,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 @SuppressWarnings("ConstantConditions")
 public class GMSHook implements IXposedHookLoadPackage {
 
-    private static final String TAG = GMSHook;
+    private static final String TAG = GMSHook.class.getSimpleName();
     private static final String[] PACKAGE_ROG1 = {"ru.andr7e.deviceinfohw","com.madfingergames.legends"};
     private static final String[] PACKAGE_ROG3 = {"com.pearlabyss.blackdesertm","com.pearlabyss.blackdesertm.gl"};
     private static final String[] PACKAGE_XP5 = {"com.ytheekshana.deviceinfo","com.activision.callofduty.shooter","com.garena.game.codm","com.tencent.tmgp.kr.codm","com.vng.codmvn"};
