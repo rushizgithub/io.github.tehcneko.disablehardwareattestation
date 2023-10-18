@@ -54,7 +54,7 @@ public class GMSHook implements IXposedHookLoadPackage {
         }
 
         if (Arrays.asList(PACKAGE_OP9R).contains(packageName)) {
-            OP9R();
+            OP9RP();
         }
 
         if (Arrays.asList(PACKAGE_M11TP).contains(packageName)) {
@@ -62,7 +62,7 @@ public class GMSHook implements IXposedHookLoadPackage {
         }
 
         if (Arrays.asList(PACKAGE_F4).contains(packageName)) {
-            F4();
+            POCOF4();
         }
 
         if (Arrays.asList(PACKAGE_ROG6).contains(packageName)) {
@@ -78,7 +78,7 @@ public class GMSHook implements IXposedHookLoadPackage {
         }
 
         if (Arrays.asList(PACKAGE_F5).contains(packageName)) {
-            F5();
+            POCOF5();
         }
 
         if (Arrays.asList(PACKAGE_K30U).contains(packageName)) {
@@ -140,7 +140,7 @@ public class GMSHook implements IXposedHookLoadPackage {
         setBuildField("MODEL", "2210132C");
     }
 
-    private static void F5() {
+    private static void POCOF5() {
         setBuildField("MANUFACTURER", "Xiaomi");
         setBuildField("MODEL", "23049PCD8G");
     }
