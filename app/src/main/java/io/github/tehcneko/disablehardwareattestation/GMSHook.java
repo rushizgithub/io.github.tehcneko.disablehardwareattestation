@@ -154,6 +154,8 @@ public class GMSHook implements IXposedHookLoadPackage {
             field.set(null, value);
             // Lock
             field.setAccessible(false);
+
+            Log.d(TAG, "Spoofed Build." + key + " with value: " + value);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             Log.e(TAG, "Failed to spoof Build." + key, e);
         }
