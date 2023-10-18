@@ -38,48 +38,68 @@ public class GMSHook implements IXposedHookLoadPackage {
         
         if (Arrays.asList(PACKAGE_ROG1).contains(packageName)) {
             ROG1();
-            dlog("Spoofing as Asus ROG 1" + packageName);
-            Log.d(("Spoofing as Asus ROG 1" + packageName);
+            dlog("Spoof as Asus ROG 1" + packageName);
+            Log.d(("Spoofing as Asus ROG 1" + packageName));
         }
 
         if (Arrays.asList(PACKAGE_ROG3).contains(packageName)) {
             ROG3();
+            dlog("Spoof as Asus ROG 3" + packageName);
+            Log.d(("Spoofing as Asus ROG 3" + packageName));
         }
 
         if (Arrays.asList(PACKAGE_XP5).contains(packageName)) {
             XP5();
+            dlog("Spoof as Sony Xperia 5" + packageName);
+            Log.d(("Spoofing as Sony Xperia 5" + packageName));
         }
 
         if (Arrays.asList(PACKAGE_OP8P).contains(packageName)) {
             OP8P();
+            dlog("Spoof as OnePlus 8 Pro" + packageName);
+            Log.d(("Spoofing as OnePlus 8 Pro" + packageName));
         }
 
         if (Arrays.asList(PACKAGE_OP9R).contains(packageName)) {
             OP9RP();
+            dlog("Spoof as OnePlus 9R" + packageName);
+            Log.d(("Spoofing as OnePlus 9R" + packageName));
         }
 
         if (Arrays.asList(PACKAGE_M11TP).contains(packageName)) {
             M11TP();
+            dlog("Spoof as Mi 11T Pro" + packageName);
+            Log.d(("Spoofing as Mi 11T Pro" + packageName));
         }
 
         if (Arrays.asList(PACKAGE_ROG6).contains(packageName)) {
             ROG6();
+            dlog("Spoof as Asus ROG 6" + packageName);
+            Log.d(("Spoofing as Asus ROG 6" + packageName));
         }
 
         if (Arrays.asList(PACKAGE_OP9P).contains(packageName)) {
             OP9P();
+            dlog("Spoof as OnePlus 9 Pro" + packageName);
+            Log.d(("Spoofing as OnePlus 9 Pro" + packageName));
         }
 
         if (Arrays.asList(PACKAGE_M13TP).contains(packageName)) {
             M13TP();
+            dlog("Spoof as  Mi 13T Pro" + packageName);
+            Log.d(("Spoofing as Mi 13T Pro" + packageName));
         }
 
         if (Arrays.asList(PACKAGE_F5).contains(packageName)) {
             POCOF5();
+            dlog("Spoof as Poco F5" + packageName);
+            Log.d(("Spoofing as Poco F5" + packageName));
         }
 
         if (Arrays.asList(PACKAGE_K30U).contains(packageName)) {
             K30U();
+            dlog("Spoof as Redmi K30 Ultra" + packageName);
+            Log.d(("Spoofing as Redmi K30 Ultra" + packageName));
         }
         
     }
