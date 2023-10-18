@@ -38,6 +38,8 @@ public class GMSHook implements IXposedHookLoadPackage {
         
         if (Arrays.asList(PACKAGE_ROG1).contains(packageName)) {
             ROG1();
+            dlog("Spoofing as Asus ROG 1" + packageName);
+            Log.d(("Spoofing as Asus ROG 1" + packageName);
         }
 
         if (Arrays.asList(PACKAGE_ROG3).contains(packageName)) {
@@ -154,13 +156,11 @@ public class GMSHook implements IXposedHookLoadPackage {
             field.set(null, value);
             // Lock
             field.setAccessible(false);
-             Log.i(tag, "processing " + lpparam.packageName);
-XposedBridge.log("tag: cannot find SystemProperties class");
-            Log.d(TAG, "Spoofed Build." + key + " with value: " + value);
-XposedBridge.log(TAG, " Build." + key + " with value: " + value);
+            
+            Log.d(TAG, "Spoofed" + key + " with value: " + value);
             
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            Log.e(TAG, "Failed to spoof Build." + key, e);
+            Log.e(TAG, "Failed to spoof App." + key, e);
         }
     }
 
