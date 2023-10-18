@@ -95,14 +95,16 @@ public class GMSHook {
             "com.madfingergames.legends",
             "com.mobile.legends",
             "com.pearlabyss.blackdesertm",
-            "com.pearlabyss.blackdesertm.gl"
+            "com.pearlabyss.blackdesertm.gl",
+            "ru.andr7e.deviceinfohw"
     };
 
     // Packages to Spoof as Xperia 5
     private static final String[] packagesToChangeXP5 = {
             "com.garena.game.codm",
             "com.tencent.tmgp.kr.codm",
-            "com.vng.codmvn"
+            "com.vng.codmvn",
+            "com.ytheekshana.deviceinfo"
     };
 
     // Packages to Spoof as OnePlus 8 Pro
@@ -115,7 +117,8 @@ public class GMSHook {
             "com.riotgames.league.wildriftvn",
             "com.tencent.ig",
             "com.tencent.tmgp.pubgmhd",
-            "com.vng.pubgmobile"
+            "com.vng.pubgmobile",
+            "flar2.devcheck"
     };
 
     // Packages to Spoof as OnePlus 9 Pro
@@ -233,7 +236,7 @@ public class GMSHook {
 
             if (packageName.equals("com.google.android.apps.photos")) {
                     propsToChange.putAll(propsToChangePixelXL);
-            } else if (packageName.equals("com.netflix.mediaclient") {
+            } else if (packageName.equals("com.netflix.mediaclient")) {
                     if (DEBUG) Log.d(TAG, "Netflix spoofing disabled by system prop");
                     return;
             } else if (packageName.equals("com.android.vending")) {
